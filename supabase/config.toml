@@ -1,1 +1,4 @@
 project_id = "tngdedahfmtfkzjvyrnk"
+
+[functions.asaas-integration]
+verify_jwt = true
