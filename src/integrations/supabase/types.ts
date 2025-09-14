@@ -14,7 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      transactions: {
+        Row: {
+          asaas_payment_id: string | null
+          created_at: string
+          description: string | null
+          destination_address: string | null
+          id: string
+          retained_amount: number | null
+          sent_amount: number | null
+          status: string
+          type: string
+          updated_at: string
+          user_id: string
+          value: number
+        }
+        Insert: {
+          asaas_payment_id?: string | null
+          created_at?: string
+          description?: string | null
+          destination_address?: string | null
+          id?: string
+          retained_amount?: number | null
+          sent_amount?: number | null
+          status?: string
+          type: string
+          updated_at?: string
+          user_id: string
+          value: number
+        }
+        Update: {
+          asaas_payment_id?: string | null
+          created_at?: string
+          description?: string | null
+          destination_address?: string | null
+          id?: string
+          retained_amount?: number | null
+          sent_amount?: number | null
+          status?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+          value?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
