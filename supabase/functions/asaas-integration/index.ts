@@ -54,26 +54,40 @@ serve(async (req) => {
 
 async function generatePixQR(userId: string, { value, description }: { value: number, description: string }) {
   try {
-    // Criar cobrança PIX no Asaas
+    console.log('Generating PIX QR for user:', userId, 'value:', value, 'description:', description);
+    console.log('Using Asaas API key:', asaasApiKey ? 'Present' : 'Missing');
+    
+    // Criar cobrança PIX no Asaas - need customer info for Asaas
+    const paymentPayload = {
+      customer: {
+        name: 'Cliente ZaPix',
+        email: 'cliente@zapix.com',
+        cpfCnpj: '00000000000', // CPF fictício para testes
+      },
+      billingType: 'PIX',
+      value: value,
+      description: description,
+      dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 24h
+    };
+    
+    console.log('Payment payload:', JSON.stringify(paymentPayload));
+    
     const response = await fetch('https://www.asaas.com/api/v3/payments', {
       method: 'POST',
       headers: {
         'access_token': asaasApiKey!,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        billingType: 'PIX',
-        value: value,
-        description: description,
-        dueDate: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 24h
-      }),
+      body: JSON.stringify(paymentPayload),
     });
 
     const paymentData = await response.json();
-    console.log('Asaas payment response:', paymentData);
+    console.log('Asaas payment response status:', response.status);
+    console.log('Asaas payment response:', JSON.stringify(paymentData));
 
     if (!response.ok) {
-      throw new Error(paymentData.message || 'Erro ao criar cobrança PIX');
+      console.error('Asaas API error:', paymentData);
+      throw new Error(paymentData.errors?.[0]?.description || paymentData.message || 'Erro ao criar cobrança PIX');
     }
 
     // Buscar QR code da cobrança
