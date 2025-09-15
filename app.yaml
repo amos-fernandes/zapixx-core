@@ -1,0 +1,52 @@
+runtime: nodejs18
+
+# Configuração para servir arquivos estáticos do build
+handlers:
+  # Servir arquivos estáticos (CSS, JS, imagens)
+  - url: /assets
+    static_dir: dist/assets
+    secure: always
+
+  # Servir favicon e outros arquivos na raiz
+  - url: /(.*\.(ico|png|jpg|jpeg|gif|svg|webp|css|js|json|txt|xml))$
+    static_files: dist/\1
+    upload: dist/.*\.(ico|png|jpg|jpeg|gif|svg|webp|css|js|json|txt|xml)$
+    secure: always
+
+  # Redirecionar todas as outras rotas para o index.html (SPA)
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
+    secure: always
+
+# Configurações de ambiente
+env_variables:
+  NODE_ENV: "production"
+
+# Configurações de instância
+instance_class: F1
+automatic_scaling:
+  min_instances: 0
+  max_instances: 2
+
+# Configurações de build
+build_env_variables:
+  NODE_VERSION: "18"
+
+# Scripts de build
+build:
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["install"]
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["run", "build"]
+
+# Ignorar arquivos desnecessários
+skip_files:
+  - ^(.*/)?#.*#$
+  - ^(.*/)?.*~$
+  - ^(.*/)?.*\.py[co]$
+  - ^(.*/)?.*/RCS/.*$
+  - ^(.*/)?\..*$
+  - ^(.*/)?node_modules/.*$
+  - ^(.*/)?src/.*$
+  - ^(.*/)?\.env\.local$
