@@ -72,7 +72,7 @@ async function generatePixQR(userId: string, { value, description }: { value: nu
     
     console.log('Payment payload:', JSON.stringify(paymentPayload));
     
-    const response = await fetch('https://sandbox.asaas.com/api/v3/payments', {
+    const response = await fetch('https://www.asaas.com/api/v3/payments', {
       method: 'POST',
       headers: {
         'access_token': asaasApiKey!,
@@ -91,7 +91,7 @@ async function generatePixQR(userId: string, { value, description }: { value: nu
     }
 
     // Buscar QR code da cobrança
-    const qrResponse = await fetch(`https://sandbox.asaas.com/api/v3/payments/${paymentData.id}/pixQrCode`, {
+    const qrResponse = await fetch(`https://www.asaas.com/api/v3/payments/${paymentData.id}/pixQrCode`, {
       headers: {
         'access_token': asaasApiKey!,
       },
@@ -139,7 +139,7 @@ async function generatePixQR(userId: string, { value, description }: { value: nu
 
 async function checkPaymentStatus(paymentId: string) {
   try {
-    const response = await fetch(`https://sandbox.asaas.com/api/v3/payments/${paymentId}`, {
+    const response = await fetch(`https://www.asaas.com/api/v3/payments/${paymentId}`, {
       headers: {
         'access_token': asaasApiKey!,
       },
